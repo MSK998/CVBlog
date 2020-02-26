@@ -11,10 +11,12 @@ import { Cv } from './cv';
 
 export class CvService {
 
+  editing = false;
+  private editingUpdated = new Subject<boolean>();
   private cv = [];
   private cvUpdated = new Subject<Cv[]>();
 
-  constructor (private http: HttpClient) {
+  constructor () {
 
   }
 
@@ -24,6 +26,10 @@ export class CvService {
 
   getCvUpdateListener() {
     return this.cvUpdated.asObservable();
+  }
+
+  getEditingUpdateListener() {
+    return this.editingUpdated.asObservable()
   }
 
   addSection(section) {
@@ -49,5 +55,19 @@ export class CvService {
 
     this.cv[index].title = section.title;
     this.cv[index].main = section.main
+  }
+
+  toggleEditing() {
+    if (this.editing) {
+      this.editing = false;
+      this.editingUpdated.next(false);
+    } else {
+      this.editing= true
+      this.editingUpdated.next(true);
+    }
+  }
+
+  getIsEditing() {
+    return this.editing;
   }
 }
