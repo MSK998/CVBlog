@@ -17,7 +17,5 @@ export class EditCvComponent{
 
   editSections() {
     this.cvService.toggleEditing()
-    console.log(this.cvService.getIsEditing());
-    console.log(this.cvService.getEditingUpdateListener())
   }
 }

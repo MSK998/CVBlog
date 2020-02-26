@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 
 import { Cv } from './cv';
+import { CV } from './test-cv';
 
 @Injectable({
   providedIn: 'root'
@@ -13,18 +14,22 @@ export class CvService {
 
   editing = false;
   private editingUpdated = new Subject<boolean>();
-  private cv = [];
-  private cvUpdated = new Subject<Cv[]>();
+  private cvId = CV._id;
+  private cv = CV.section;
+  private cvUpdated = new Subject<any>();
 
-  constructor () {
+  constructor() {
 
   }
 
   getCv() {
+    console.log([...this.cv]);
+    this.cvUpdated.next([...this.cv])
     return [...this.cv];
   }
 
   getCvUpdateListener() {
+    console.log([...this.cv]);
     return this.cvUpdated.asObservable();
   }
 
@@ -34,7 +39,7 @@ export class CvService {
 
   addSection(section) {
 
-    const newSection = {section: section};
+    const newSection = section;
 
     this.cv.push(newSection);
 
@@ -62,7 +67,7 @@ export class CvService {
       this.editing = false;
       this.editingUpdated.next(false);
     } else {
-      this.editing= true
+      this.editing = true
       this.editingUpdated.next(true);
     }
   }
