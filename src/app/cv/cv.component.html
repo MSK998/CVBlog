@@ -1,13 +1,17 @@
 
-<div>
+<div *ngFor="let section of cv">
   <section>
-    <h1>testing 12</h1>
+    <h1>{{section.title}}</h1>
   </section>
   <mat-card>
     <mat-card-content>
       <ul>
-        <li>This is a bullet point</li>
+        <li>
+          {{section.main}} <br>
+         </li>
       </ul>
     </mat-card-content>
   </mat-card>
 </div>
+
+<button id="addSect" mat-raised-button color="accent" *ngIf="editState">Add Section</button>

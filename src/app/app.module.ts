@@ -19,7 +19,10 @@ import { CvComponent } from './cv/cv.component';
     AppComponent,
     HeaderComponent,
     EditCvComponent,
-    CvComponent
+    CvComponent,
+  ],
+  entryComponents: [
+    
   ],
   imports: [
     BrowserModule,

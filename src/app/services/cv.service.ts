@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 
 import { Cv } from './cv';
+import { CV } from './test-cv';
 
 @Injectable({
   providedIn: 'root'
@@ -11,25 +12,34 @@ import { Cv } from './cv';
 
 export class CvService {
 
-  private cv = [];
-  private cvUpdated = new Subject<Cv[]>();
+  editing = false;
+  private editingUpdated = new Subject<boolean>();
+  private cvId = CV._id;
+  private cv = CV.section;
+  private cvUpdated = new Subject<any>();
 
-  constructor(private http: HttpClient) {
+  constructor() {
 
   }
 
   getCv() {
+    console.log([...this.cv]);
+    this.cvUpdated.next([...this.cv]);
     return [...this.cv];
   }
 
   getCvUpdateListener() {
+    console.log([...this.cv]);
     return this.cvUpdated.asObservable();
+  }
+
+  getEditingUpdateListener() {
+    return this.editingUpdated.asObservable();
   }
 
   addSection(section) {
 
-    // tslint:disable-next-line: object-literal-shorthand
-    const newSection = {section: section};
+    const newSection = section;
 
     this.cv.push(newSection);
 
@@ -50,5 +60,19 @@ export class CvService {
 
     this.cv[index].title = section.title;
     this.cv[index].main = section.main;
+  }
+
+  toggleEditing() {
+    if (this.editing) {
+      this.editing = false;
+      this.editingUpdated.next(false);
+    } else {
+      this.editing = true;
+      this.editingUpdated.next(true);
+    }
+  }
+
+  getIsEditing() {
+    return this.editing;
   }
 }
