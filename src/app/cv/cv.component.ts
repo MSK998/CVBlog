@@ -51,6 +51,5 @@ export class AddSectionDialog {
 
   constructor(
     public dialogRef: MatDialogRef<AddSectionDialog>,
-    @In
   ){}
 }
