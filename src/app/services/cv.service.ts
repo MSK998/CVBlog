@@ -14,7 +14,7 @@ export class CvService {
   private cv = [];
   private cvUpdated = new Subject<Cv[]>();
 
-  constructor (private http: HttpClient) {
+  constructor(private http: HttpClient) {
 
   }
 
@@ -28,6 +28,7 @@ export class CvService {
 
   addSection(section) {
 
+    // tslint:disable-next-line: object-literal-shorthand
     const newSection = {section: section};
 
     this.cv.push(newSection);
@@ -48,6 +49,6 @@ export class CvService {
     const index = this.cv.findIndex(x => x.id === section);
 
     this.cv[index].title = section.title;
-    this.cv[index].main = section.main
+    this.cv[index].main = section.main;
   }
 }
