@@ -1,5 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  Inject
+} from '@angular/core';
 import { Subscription } from 'rxjs';
+import { NgForm } from '@angular/forms';
 
 import { CvService } from '../services/cv.service';
 import { Cv } from '../services/cv';
@@ -11,7 +17,7 @@ import { MatDialogRef } from '@angular/material';
   styleUrls: ['./cv.component.css']
 })
 
-export class CvComponent implements OnInit, OnDestroy{
+export class CvComponent implements OnInit, OnDestroy {
 
   cv;
   private cvSub: Subscription;
@@ -19,27 +25,27 @@ export class CvComponent implements OnInit, OnDestroy{
   editState: boolean;
   private editSub: Subscription;
 
-  constructor(private cvService: CvService) {}
+  constructor(private cvService: CvService) { }
 
   ngOnInit() {
     this.cv = this.cvService.getCv();
-    this.editSub = this.cvService.getEditingUpdateListener().subscribe((editState: boolean) => {
-      this.editState = editState;
-      console.log(this.editState);
-    });
+    this.editSub = this.cvService.getEditingUpdateListener()
+      .subscribe((editState: boolean) => {
+        this.editState = editState;
+        console.log(this.editState);
+      });
 
-    this.cvSub = this.cvService.getCvUpdateListener().subscribe((cv: []) => {
-      console.log(cv);
-      this.cv = cv;
-    });
+    this.cvSub = this.cvService.getCvUpdateListener()
+      .subscribe((cv: []) => {
+        console.log(cv);
+        this.cv = cv;
+      });
   }
 
   ngOnDestroy() {
     this.editSub.unsubscribe();
     this.cvSub.unsubscribe();
   }
-
-
 }
 
 @Component({
@@ -49,7 +55,17 @@ export class CvComponent implements OnInit, OnDestroy{
 
 export class AddSectionDialog {
 
+  isLoading = false;
+
   constructor(
     public dialogRef: MatDialogRef<AddSectionDialog>,
-  ){}
+    private cvService: CvService
+  ) { }
+
+  addSection(form: NgForm): void {
+    const section = {
+      title: "test",
+      main: [],
+    };
+  }
 }

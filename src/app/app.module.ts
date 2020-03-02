@@ -5,14 +5,21 @@ import {
   MatToolbarModule,
   MatIconModule,
   MatButtonModule,
-  MatCardModule} from '@angular/material';
+  MatCardModule,
+  MatDialogModule,
+  MatFormFieldModule,
+  MatSpinner,
+  MatProgressSpinnerModule,
+  MatInputModule
+} from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HeaderComponent } from './header/header.component';
 import { EditCvComponent } from './edit-cv/edit-cv.component';
-import { CvComponent } from './cv/cv.component';
+import { CvComponent, AddSectionDialog } from './cv/cv.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,9 +27,10 @@ import { CvComponent } from './cv/cv.component';
     HeaderComponent,
     EditCvComponent,
     CvComponent,
+    AddSectionDialog,
   ],
   entryComponents: [
-    
+
   ],
   imports: [
     BrowserModule,
@@ -30,7 +38,12 @@ import { CvComponent } from './cv/cv.component';
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatProgressSpinnerModule,
+    MatInputModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

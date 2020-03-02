@@ -1,6 +1,19 @@
-<h1 mat-dialog-title>Add/Edit</h1>
-<div>
-  <mat-form-field>
-    <mat-label
-  </mat-form-field>
-</div>
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<form (submit)="addSection(sectionForm)" #sectionForm="ngForm" *ngIf="!isLoading">
+  <h1 mat-dialog-title>Add</h1>
+  <div>
+    <mat-form-field>
+      <input matInput type="string" placeholder="Title" #sectionTitle="ngModel" ngModel required>
+      <mat-error *ngIf="sectionTitle.invalid">Please Enter a Title</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <input matInput type="string" placeholder="Main" #sectionMain="ngModel" ngModel required>
+      <mat-error *ngIf="sectionMain.invalid">Please Enter a Main Section</mat-error>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="accent" type="submit">Add Section</button>
+    <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+  </div>
+
+</form>
