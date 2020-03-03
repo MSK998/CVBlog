@@ -7,7 +7,7 @@ export const CV: Cv = {
       id: 'test',
       title: 'About Me',
       main: [
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dictum, ex sed dapibus finibus, ex enim ullamcorper justo, varius scelerisque mauris lacus ac felis.Fusce pulvinar purus sed nisi fermentum, vel sagittis tellus hendrerit. Proin eget nunc sit amet turpis pretium eleifend. Vivamus faucibus massa nisi, sed euismod est tempor sed. Integer ex sapien, facilisis sed odio vitae, molestie scelerisque mauris. Phasellus ultricies facilisis felis, ut aliquam odio dignissim ut. Integer consequat bibendum leo, non tincidunt ex feugiat id.'
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dictum, ex sed dapibus finibus, ex enim ullamcorper justo, varius scelerisque mauris lacus ac felis.Fusce pulvinar purus sed nisi fermentum, vel sagittis tellus hendrerit. Proin eget nunc sit amet turpis pretium eleifend. Vivamus faucibus massa nisi, sed euismod est tempor sed. Integer ex sapien, facilisis sed odio vitae, molestie scelerisque mauris. Phasellus ultricies facilisis felis, ut aliquam odio dignissim ut. Integer consequat bibendum leo, non tincidunt ex feugiat id. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
       ]
     },
     {

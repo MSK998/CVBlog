@@ -1,0 +1,9 @@
+button{
+  right: 3rem;
+ }
+
+ textarea{
+   resize: none;
+   max-width: 85%;
+   min-width: 80%;
+  }

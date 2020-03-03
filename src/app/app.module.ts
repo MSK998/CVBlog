@@ -10,7 +10,8 @@ import {
   MatFormFieldModule,
   MatSpinner,
   MatProgressSpinnerModule,
-  MatInputModule
+  MatInputModule,
+  MatCheckboxModule
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -27,10 +28,10 @@ import { FormsModule } from '@angular/forms';
     HeaderComponent,
     EditCvComponent,
     CvComponent,
-    AddSectionDialog,
+    AddSectionDialog
   ],
   entryComponents: [
-
+    AddSectionDialog
   ],
   imports: [
     BrowserModule,
@@ -43,7 +44,8 @@ import { FormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatProgressSpinnerModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]
