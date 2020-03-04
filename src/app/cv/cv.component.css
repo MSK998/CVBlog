@@ -1,18 +1,21 @@
 mat-card {
   max-width: 60%;
   min-width: 60%;
+  display: inline-block;
   margin: auto;
   margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 section {
   max-width: 20%;
   min-width: 20%;
   float: left;
+  display: inline-table;
 
   position: -webkit-sticky;
   position: sticky;
-  top: 4rem;
+  top: 1rem;
   left: 1rem;
 }
 

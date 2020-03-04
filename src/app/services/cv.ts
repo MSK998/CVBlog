@@ -3,7 +3,7 @@ export interface Cv {
   section: {
     id: string,
     title: string,
-    main: [any]
+    main: any[]
   }[];
 
 }

@@ -4,19 +4,42 @@
   <h1 mat-dialog-title>Add</h1>
   <div>
     <mat-form-field>
-      <input matInput type="string" placeholder="Title" [(ngModel)]="sectionTitle" #sectionTitle="ngModel" ngModel required>
-      <mat-error *ngIf="sectionTitle.invalid">Please Enter a Title</mat-error>
+      <input
+        matInput
+        type="string"
+        placeholder="Title"
+        [(ngModel)]="data.title"
+        name="sectionTitle"
+        required
+      />
+      <mat-error *ngIf="!data.title">Please Enter a Title</mat-error>
     </mat-form-field>
-    <br>
+    <br />
     <mat-form-field>
-      <textarea matInput type="string" placeholder="Main" rows="5" [(ngModel)]="sectionMain" #sectionMain="ngModel" ngModel required></textarea>
-      <mat-error *ngIf="sectionMain.invalid">Please Enter a Main Section</mat-error>
+      <textarea
+        matInput
+        type="string"
+        placeholder="Main"
+        rows="5"
+        draggable="false"
+        [(ngModel)]="data.main"
+        name="sectionMain"
+        required
+      ></textarea>
+      <mat-error *ngIf="!data.main">Please Enter a Main Section</mat-error>
     </mat-form-field>
-    <br>
-    <mat-checkbox [(ngModel)]="isChecked">List?</mat-checkbox>
-    <br>
-    <button mat-raised-button color="accent" type="submit">Add Section</button>
-    <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
   </div>
 
+  <br />
+
+  <section>
+    <mat-checkbox [(ngModel)]="isChecked" name="isChecked"
+      >Check to make a comma seperated list</mat-checkbox
+    >
+    <br />
+    <button mat-raised-button color="accent" type="submit" mat-dialog-close>
+      Add Section
+    </button>
+    <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+  </section>
 </form>

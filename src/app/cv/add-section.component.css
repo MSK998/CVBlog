@@ -1,9 +1,25 @@
-button{
-  right: 3rem;
- }
+mat-form-field {
+  max-width: 85%;
+  min-width: 80%;
+  align-items: center;
+}
 
- textarea{
-   resize: none;
-   max-width: 85%;
-   min-width: 80%;
-  }
+section {
+  margin: auto;
+  text-align: center;
+}
+
+button {
+  margin: 0.5rem;
+}
+
+textarea[name=sectionMain]{
+  resize: none;
+}
+
+div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

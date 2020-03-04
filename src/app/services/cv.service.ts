@@ -3,8 +3,11 @@ import { HttpClient } from '@angular/common/http';
 
 import { Subject } from 'rxjs';
 
+import { v4 as uuid } from 'uuid';
+
 import { Cv } from './cv';
 import { CV } from './test-cv';
+import { MatInkBar } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
@@ -38,10 +41,21 @@ export class CvService {
   }
 
   addSection(section) {
+    const id = uuid();
 
-    const newSection = section;
+    const main = [];
+
+    main.push(section.main)
+
+    const newSection = {
+      id: id,
+      title: section.title,
+      main: main
+    }
 
     this.cv.push(newSection);
+
+    console.log(this.cv)
 
     this.cvUpdated.next([...this.cv]);
   }

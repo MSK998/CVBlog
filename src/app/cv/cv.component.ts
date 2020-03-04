@@ -1,10 +1,21 @@
-import { Component, OnDestroy, OnInit, Inject } from "@angular/core";
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  Inject,
+  ViewEncapsulation
+} from "@angular/core";
 import { Subscription } from "rxjs";
 import { NgForm } from "@angular/forms";
 
 import { CvService } from "../services/cv.service";
 import { Cv } from "../services/cv";
 import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from "@angular/material";
+
+export interface DialogData {
+  title: string;
+  main: string;
+}
 
 @Component({
   selector: "app-cv",
@@ -30,7 +41,6 @@ export class CvComponent implements OnInit, OnDestroy {
       });
 
     this.cvSub = this.cvService.getCvUpdateListener().subscribe((cv: []) => {
-      console.log(cv);
       this.cv = cv;
     });
   }
@@ -50,7 +60,8 @@ export class CvComponent implements OnInit, OnDestroy {
 
 @Component({
   selector: "app-add-section-dialog",
-  templateUrl: "./add-section.component.html"
+  templateUrl: "./add-section.component.html",
+  styleUrls: ["./add-section.component.css"]
 })
 export class AddSectionDialog {
   isLoading = false;
@@ -59,7 +70,7 @@ export class AddSectionDialog {
   constructor(
     public dialogRef: MatDialogRef<AddSectionDialog>,
     private cvService: CvService,
-    @Inject(MAT_DIALOG_DATA) public data
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {}
 
   addSection(form: NgForm): void {
@@ -67,5 +78,7 @@ export class AddSectionDialog {
       title: form.value.sectionTitle,
       main: form.value.sectionMain
     };
+
+    this.cvService.addSection(section);
   }
 }

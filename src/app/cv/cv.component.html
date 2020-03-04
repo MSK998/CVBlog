@@ -1,17 +1,26 @@
+<ng-container *ngFor="let section of cv">
+  <div>
+    <section>
+      <h1>{{ section.title }}</h1>
+    </section>
+    <mat-card>
+      <mat-card-content>
+        {{ section.main }}
+      </mat-card-content>
+      <mat-card-footer *ngIf="editState">
+        <button></button>
+        <button></button>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+</ng-container>
 
-<div *ngFor="let section of cv">
-  <section>
-    <h1>{{section.title}}</h1>
-  </section>
-  <mat-card>
-    <mat-card-content>
-      <ul>
-        <li>
-          {{section.main}} <br>
-         </li>
-      </ul>
-    </mat-card-content>
-  </mat-card>
-</div>
-
-<button (click)="openAddSection()" id="addSect" mat-raised-button color="accent" *ngIf="editState">Add Section</button>
+<button
+  (click)="openAddSection()"
+  id="addSect"
+  mat-raised-button
+  color="accent"
+  *ngIf="editState"
+>
+  Add Section
+</button>
