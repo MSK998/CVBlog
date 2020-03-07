@@ -19,6 +19,17 @@ section {
   left: 1rem;
 }
 
+/* MAT CARD FOOTER */
+
+mat-card-footer {
+  float: right;
+  margin: auto;
+}
+
+mat-card-footer button {
+  margin: 0.2rem;
+}
+
 button#addSect {
   display: block;
   margin: auto;

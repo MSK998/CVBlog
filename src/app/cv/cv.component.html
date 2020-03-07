@@ -1,18 +1,20 @@
-<ng-container *ngFor="let section of cv">
-  <div>
-    <section>
-      <h1>{{ section.title }}</h1>
-    </section>
-    <mat-card>
-      <mat-card-content>
-        {{ section.main }}
-      </mat-card-content>
-      <mat-card-footer *ngIf="editState">
-        <button></button>
-        <button></button>
-      </mat-card-footer>
-    </mat-card>
-  </div>
+<ng-container *ngIf="!isLoading">
+  <ng-container *ngFor="let section of cvSections">
+    <div>
+      <section>
+        <h1>{{ section.title }}</h1>
+      </section>
+      <mat-card>
+        <mat-card-content>
+          {{ section.main }}
+        </mat-card-content>
+        <mat-card-footer *ngIf="editState">
+          <button mat-raised-button>Edit Section</button>
+          <button mat-raised-button>Delete Section</button>
+        </mat-card-footer>
+      </mat-card>
+    </div>
+  </ng-container>
 </ng-container>
 
 <button

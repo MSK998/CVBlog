@@ -23,16 +23,17 @@ export interface DialogData {
   styleUrls: ["./cv.component.css"]
 })
 export class CvComponent implements OnInit, OnDestroy {
-  cv;
+  public cvSections: any[];
   private cvSub: Subscription;
 
   editState: boolean;
   private editSub: Subscription;
 
+  isLoading = false;
+
   constructor(private cvService: CvService, public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.cv = this.cvService.getCv();
     this.editSub = this.cvService
       .getEditingUpdateListener()
       .subscribe((editState: boolean) => {
@@ -40,9 +41,16 @@ export class CvComponent implements OnInit, OnDestroy {
         console.log(this.editState);
       });
 
-    this.cvSub = this.cvService.getCvUpdateListener().subscribe((cv: []) => {
-      this.cv = cv;
-    });
+    this.isLoading = true;
+    this.cvSections = this.cvService.getCv();
+    console.log(this.cvSections);
+    this.cvSub = this.cvService
+      .getCvUpdateListener()
+      .subscribe((cvSection: any[]) => {
+        this.cvSections = cvSection;
+        this.isLoading = false;
+        console.log(this.cvSections);
+      });
   }
 
   ngOnDestroy() {

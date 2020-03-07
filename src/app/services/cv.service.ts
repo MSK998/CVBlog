@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { Cv } from './cv';
-import { CV } from './test-cv';
+// import { CV } from './test-cv';
 import { MatInkBar } from '@angular/material';
 
 @Injectable({
@@ -17,22 +17,30 @@ export class CvService {
 
   editing = false;
   private editingUpdated = new Subject<boolean>();
-  private cvId = CV._id;
-  private cv = CV.section;
+
+  public cvId: string;
+  public cvSections: any[] = [];
   private cvUpdated = new Subject<any>();
 
-  constructor() {
+  constructor(private http: HttpClient) {
 
   }
 
   getCv() {
-    console.log([...this.cv]);
-    this.cvUpdated.next([...this.cv]);
-    return [...this.cv];
+
+    this.http.get<{ message: string; cv: Cv}>(
+      'http://localhost:3000/api/cv'
+    ).subscribe(cvData => {
+      console.log(cvData);
+      this.cvId = cvData.cv._id
+      this.cvSections = cvData.cv.section
+      this.cvUpdated.next([...this.cvSections])
+    });
+
+    return [...this.cvSections];
   }
 
   getCvUpdateListener() {
-    console.log([...this.cv]);
     return this.cvUpdated.asObservable();
   }
 
@@ -53,27 +61,25 @@ export class CvService {
       main: main
     }
 
-    this.cv.push(newSection);
+    this.cvSections.push(newSection);
 
-    console.log(this.cv)
-
-    this.cvUpdated.next([...this.cv]);
+    this.cvUpdated.next([...this.cvSections]);
   }
 
   removeSection(sectionId) {
 
-    const index = this.cv.findIndex(x => x.id === sectionId);
+    const index = this.cvSections.findIndex(x => x.id === sectionId);
 
-    this.cv.splice(index, 1);
+    this.cvSections.splice(index, 1);
 
-    this.cvUpdated.next([...this.cv]);
+    this.cvUpdated.next([...this.cvSections]);
   }
 
   editSection(section) {
-    const index = this.cv.findIndex(x => x.id === section);
+    const index = this.cvSections.findIndex(x => x.id === section);
 
-    this.cv[index].title = section.title;
-    this.cv[index].main = section.main;
+    this.cvSections[index].title = section.title;
+    this.cvSections[index].main = section.main;
   }
 
   toggleEditing() {
