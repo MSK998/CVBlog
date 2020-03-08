@@ -30,6 +30,7 @@ export class CvComponent implements OnInit, OnDestroy {
   private editSub: Subscription;
 
   isLoading = false;
+  isEmpty = true;
 
   constructor(private cvService: CvService, public dialog: MatDialog) {}
 
@@ -48,6 +49,9 @@ export class CvComponent implements OnInit, OnDestroy {
       .getCvUpdateListener()
       .subscribe((cvSection: any[]) => {
         this.cvSections = cvSection;
+        if(this.cvSections.length){
+          this.isEmpty = false
+        }
         this.isLoading = false;
         console.log(this.cvSections);
       });

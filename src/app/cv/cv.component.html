@@ -1,4 +1,13 @@
-<ng-container *ngIf="!isLoading">
+<ng-container *ngIf="!isLoading && isEmpty">
+  <div id="emptyMessage">
+    <p>
+      You haven't added any content to your CV yet! <br />
+      Add some by cicking the button in the bottom right
+    </p>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!isLoading && !isEmpty">
   <ng-container *ngFor="let section of cvSections">
     <div>
       <section>

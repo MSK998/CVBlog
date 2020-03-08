@@ -2,9 +2,19 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+const CONFIG = require('./config')
 const cvRoutes = require('./routes/cvs');
 
+const {db: {host, port, name, username, password}} = CONFIG;
+
 const app = express();
+
+mongoose.connect('mongodb://'+ username + ':' + password +'@localhost:27017/' + name + '?authSource=' + name)
+.then(() => {
+  console.log('Connected to' + name + 'on port ' + port);
+}).catch(() => {
+  console.log('Connection Failed');
+});
 
 app.use(bodyParser.json());
 

@@ -1,8 +1,7 @@
-export interface Cv {
-  _id: string;
+export interface Section {
   section: {
     id: string,
     title: string,
     main: any[]
-  }[];
+  }
 }

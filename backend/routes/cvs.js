@@ -1,37 +1,45 @@
 const express = require("express");
+const CV = require("../models/cv");
 
 const router = express.Router();
 
-const testCv = {
-  _id: "test",
-  section: [
-    {
-      id: "test",
-      title: "About Me",
-      main: [
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dictum, ex sed dapibus finibus, ex enim ullamcorper justo, varius scelerisque mauris lacus ac felis.Fusce pulvinar purus sed nisi fermentum, vel sagittis tellus hendrerit. Proin eget nunc sit amet turpis pretium eleifend. Vivamus faucibus massa nisi, sed euismod est tempor sed. Integer ex sapien, facilisis sed odio vitae, molestie scelerisque mauris. Phasellus ultricies facilisis felis, ut aliquam odio dignissim ut. Integer consequat bibendum leo, non tincidunt ex feugiat id. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-      ]
-    },
-    {
-      id: "test2",
-      title: "Experience",
-      main: [
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque feugiat neque eu maximus. Vivamus molestie, sem in molestie vulputate, augue dolor finibus dui, vel tincidunt leo sem eu lectus. Sed sapien libero, pulvinar sit amet blandit vitae, lacinia ac velit. Donec suscipit egestas tortor, quis suscipit ex tempor eu. Suspendisse non neque ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean non ex vitae eros ornare finibus. Sed sagittis nisi nisi, ut ultrices elit imperdiet eget. Integer porta laoreet luctus. Quisque cursus vulputate tempus. Aenean ut auctor dolor. Ut et vulputate erat. "
-      ]
-    }
-  ]
-};
+router.get("/:id", (req, res, next) => {
+  console.log(req.params.id);
 
-router.get("", (req, res, next) => {
-  console.log(req.body)
-  res.status(200).json({
-    message: "CV fetched",
-    cv: testCv
+  CV.findOne({ _id: req.params.id }).then(document => {
+    console.log(document);
+
+    if (document === null) {
+      return res.status(204).json({
+        message: "No CV",
+        cv: null
+      });
+    } else {
+      return res.status(200).json({
+        message: "CV Fetched",
+        cv: document.section
+      });
+    }
   });
 });
 
-router.post("", (req, res, next) => {
-  console.log(req.body);
+router.put("", (req, res, next) => {
+
+  const cv = new CV({
+    _id: req.body._id,
+    section: req.body.section
+  });
+
+  console.log(cv)
+
+  CV.collection.updateOne({_id: cv._id}, cv, {upsert: true});
+
+  console.log('CV saved');
+
+  res.status(201).json({
+    message: 'CV updated',
+    cv: cv
+  })
 });
 
 module.exports = router;

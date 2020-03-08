@@ -19,6 +19,12 @@ section {
   left: 1rem;
 }
 
+#emptyMessage {
+  display: block;
+  color: grey;
+  text-align: center;
+}
+
 /* MAT CARD FOOTER */
 
 mat-card-footer {
