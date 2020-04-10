@@ -16,12 +16,16 @@ import {
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { HeaderComponent } from './header/header.component';
 import { EditCvComponent } from './edit-cv/edit-cv.component';
 import { CvComponent, AddSectionDialog } from './cv/cv.component';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './auth/login/login.component'
+import { SignupComponent } from './auth/signup/signup.component'
+import { AuthInterceptor } from './auth/auth-interceptor'
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +33,9 @@ import { HttpClientModule } from '@angular/common/http';
     HeaderComponent,
     EditCvComponent,
     CvComponent,
-    AddSectionDialog
+    AddSectionDialog,
+    LoginComponent,
+    SignupComponent,
   ],
   entryComponents: [
     AddSectionDialog
@@ -37,6 +43,7 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    AppRoutingModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
@@ -49,7 +56,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatCheckboxModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
