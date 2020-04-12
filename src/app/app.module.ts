@@ -26,6 +26,7 @@ import { LoginComponent } from './auth/login/login.component'
 import { SignupComponent } from './auth/signup/signup.component'
 import { AuthInterceptor } from './auth/auth-interceptor'
 import { AppRoutingModule } from './app-routing.module';
+import { MainPageComponent } from './templates/main-page.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { AppRoutingModule } from './app-routing.module';
     AddSectionDialog,
     LoginComponent,
     SignupComponent,
+    MainPageComponent
   ],
   entryComponents: [
     AddSectionDialog

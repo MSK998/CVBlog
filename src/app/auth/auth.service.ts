@@ -3,11 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { AuthData } from './auth-data';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
-import * as CryptoJS from 'crypto-js';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private encryptKey: string;
   private userId: string;
   private isAuthenticated = false;
   private token: string;
@@ -22,10 +20,6 @@ export class AuthService {
 
   getUserId() {
     return this.userId;
-  }
-
-  getEK() {
-    return this.encryptKey;
   }
 
   getAuthStatusListener() {
@@ -50,8 +44,6 @@ export class AuthService {
   loginUser(username: string, password: string) {
     const userData: AuthData = { username, password };
 
-    this.encryptKey = CryptoJS.PBKDF2(password, username, {keySize: 128 / 32}).toString();
-
     this.http
       .post<{ token: string, userId: string, expiresIn: number }>(
         'http://localhost:3000/api/user/login',
@@ -75,7 +67,7 @@ export class AuthService {
           const now = new Date();
           const expireDate = new Date(now.getTime() + expiresInDuration * 1000);
 
-          this.saveAuthData(token, userId, this.encryptKey, expireDate);
+          this.saveAuthData(token, userId, expireDate);
 
           this.router.navigate(['/']);
         }
@@ -95,7 +87,6 @@ export class AuthService {
     if (expiresIn > 0) {
       this.token = authInfo.token;
       this.userId = authInfo.userId;
-      this.encryptKey = authInfo.key;
       this.isAuthenticated = true;
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
@@ -118,24 +109,21 @@ export class AuthService {
     }, duration * 1000);
   }
 
-  private saveAuthData(token: string, userId: string, key: string, expirationDate: Date) {
+  private saveAuthData(token: string, userId: string, expirationDate: Date) {
     localStorage.setItem('token', token);
     localStorage.setItem('userId', userId);
-    localStorage.setItem('key', key);
     localStorage.setItem('expiration', expirationDate.toISOString());
   }
 
   private clearAuthData() {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
-    localStorage.removeItem('key');
     localStorage.removeItem('expiration');
   }
 
   private getAuthData() {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
-    const key = localStorage.getItem('key');
     const expirationDate = localStorage.getItem('expiration');
 
     if (!token && !expirationDate) {
@@ -147,8 +135,6 @@ export class AuthService {
       token: token,
       // tslint:disable-next-line: object-literal-shorthand
       userId: userId,
-      // tslint:disable-next-line: object-literal-shorthand
-      key: key,
       expirationDate: new Date(expirationDate)
 
     };

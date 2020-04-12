@@ -3,5 +3,15 @@
     CVBlog
   </span>
   <span class="spacer"></span>
-  <a mat-button>Login</a>
-</mat-toolbar>
+  <ul>
+    <li *ngIf="!isAuthenticated">
+      <a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
+    </li>
+    <li *ngIf="!isAuthenticated">
+      <a mat-button routerLink="/signup" routerLinkActive="mat-accent">Signup</a>
+    </li>
+    <li *ngIf="isAuthenticated">
+      <button mat-button (click)="onLogout()">Logout</button>
+    </li>
+  </ul>
+  </mat-toolbar>
