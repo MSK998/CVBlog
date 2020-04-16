@@ -1,15 +1,16 @@
 const express = require("express");
 const CV = require("../models/cv");
+const checkAuth = require('../middleware/check-auth')
+
 
 const router = express.Router();
 
-router.get("/:id", (req, res, next) => {
-  console.log(req.params.id);
+router.get("/:creator", (req, res, next) => {
+  console.log(req.params.creator)
+  CV.findOne({ creator: req.params.creator }).then(document => {
+    console.log("Document: "+document);
 
-  CV.findOne({ _id: req.params.id }).then(document => {
-    console.log(document);
-
-    if (document === null) {
+    if (!document) {
       return res.status(204).json({
         message: "No CV",
         cv: null
@@ -23,18 +24,15 @@ router.get("/:id", (req, res, next) => {
   });
 });
 
-router.put("", (req, res, next) => {
+router.put("", checkAuth, (req, res, next) => {
 
   const cv = new CV({
     _id: req.body._id,
-    section: req.body.section
+    creator: req.userData.username,
+    section: req.body.section,
   });
 
-  console.log(cv)
-
-  CV.collection.updateOne({_id: cv._id}, cv, {upsert: true});
-
-  console.log('CV saved');
+  CV.collection.updateOne({_id: cv._id}, cv,{upsert: true});
 
   res.status(201).json({
     message: 'CV updated',

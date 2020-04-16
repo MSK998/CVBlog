@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 
 import { Subject } from "rxjs";
 
@@ -15,23 +15,27 @@ export class CvService {
   editing = false;
   private editingUpdated = new Subject<boolean>();
 
+  public cvCreator
   public cvSections = [];
   private cvUpdated = new Subject<any>();
 
   constructor(private http: HttpClient) {}
 
-  getCv() {
+  getCv(username: string) {
+
+    console.log(username)
     this.http
-      .get<{ message: string; cv: Section[] }>("http://localhost:3000/api/cv/testID")
+      .get<{ message: string, cv: Section[] }>("http://localhost:3000/api/cv/" + username)
       .subscribe(cvData => {
-        console.log(cvData);
-        if (cvData === null) {
+        console.log("getCV: "+cvData);
+        if (cvData == null) {
           this.cvSections = [];
           this.cvUpdated.next([...this.cvSections]);
         } else {
-          console.log(cvData.cv)
+          console.log("getCV else: "+cvData.cv)
           this.cvSections = cvData.cv;
           this.cvUpdated.next([...this.cvSections]);
+          return this.cvSections
         }
       });
 
@@ -61,11 +65,9 @@ export class CvService {
 
     this.cvSections.push(newSection);
 
-    console.log(this.cvSections);
-
     this.http
       .put<{message: string; cv: Cv}>("http://localhost:3000/api/cv", {
-        _id: "testID",
+        _id: localStorage.getItem("userId"),
         section: this.cvSections
       })
       .subscribe(response => {
@@ -105,5 +107,13 @@ export class CvService {
 
   getIsEditing() {
     return this.editing;
+  }
+
+  clearCVData() {
+    console.log(this.cvSections)
+    this.cvSections = []
+    this.cvCreator = null
+    this.cvUpdated.next([...this.cvSections])
+    console.log(this.cvSections)
   }
 }

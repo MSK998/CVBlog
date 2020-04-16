@@ -25,12 +25,16 @@ export class LoginComponent {
   onLogin(form: NgForm): void {
     if (this.checkValid(form.value.loginUsername)) {
       this.isLoading = true;
-      // do something
-      console.log('Successful validation');
 
       this.authService.loginUser(form.value.loginUsername, form.value.loginPassword);
-      // do something
-      form.resetForm();
+      if(!this.authService.getIsAuth()){
+        this.isLoading = false;
+        form.form.controls.loginUsername.setErrors({invalid: true});
+      } else{
+        // do something
+        form.resetForm();
+      }
+
 
     } else {
       // return a failure

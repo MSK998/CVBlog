@@ -3,7 +3,7 @@ import {
   OnDestroy,
   OnInit,
   Inject,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from "@angular/core";
 import { Subscription } from "rxjs";
 import { NgForm } from "@angular/forms";
@@ -11,6 +11,9 @@ import { NgForm } from "@angular/forms";
 import { CvService } from "../services/cv.service";
 import { Cv } from "../services/cv";
 import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from "@angular/material";
+import { AuthService } from "../auth/auth.service";
+import { HttpParams } from "@angular/common/http";
+import { ActivatedRoute } from "@angular/router";
 
 export interface DialogData {
   title: string;
@@ -20,7 +23,7 @@ export interface DialogData {
 @Component({
   selector: "app-cv",
   templateUrl: "./cv.component.html",
-  styleUrls: ["./cv.component.css"]
+  styleUrls: ["./cv.component.css"],
 })
 export class CvComponent implements OnInit, OnDestroy {
   public cvSections: any[];
@@ -32,9 +35,16 @@ export class CvComponent implements OnInit, OnDestroy {
   isLoading = false;
   isEmpty = true;
 
-  constructor(private cvService: CvService, public dialog: MatDialog) {}
+  public paramId: string
+
+  constructor(
+    private cvService: CvService,
+    public dialog: MatDialog,
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit() {
+
     this.editSub = this.cvService
       .getEditingUpdateListener()
       .subscribe((editState: boolean) => {
@@ -42,18 +52,23 @@ export class CvComponent implements OnInit, OnDestroy {
         console.log(this.editState);
       });
 
+    this.paramId = this.route.snapshot.paramMap.get('creator')
+
+    console.log("ParamID:" + this.paramId)
+
     this.isLoading = true;
-    this.cvSections = this.cvService.getCv();
-    console.log(this.cvSections);
+
+    this.cvSections = this.cvService.getCv(this.paramId);
+    console.log("CV COMPONENT: " + this.cvSections);
     this.cvSub = this.cvService
       .getCvUpdateListener()
       .subscribe((cvSection: any[]) => {
         this.cvSections = cvSection;
-        if(this.cvSections.length){
-          this.isEmpty = false
+        if (this.cvSections.length) {
+          this.isEmpty = false;
         }
         this.isLoading = false;
-        console.log(this.cvSections);
+        console.log("CV COMPONENT SUB: " + this.cvSections);
       });
   }
 
@@ -65,7 +80,7 @@ export class CvComponent implements OnInit, OnDestroy {
   openAddSection() {
     this.dialog.open(AddSectionDialog, {
       width: "800px",
-      data: {}
+      data: {},
     });
   }
 }
@@ -73,7 +88,7 @@ export class CvComponent implements OnInit, OnDestroy {
 @Component({
   selector: "app-add-section-dialog",
   templateUrl: "./add-section.component.html",
-  styleUrls: ["./add-section.component.css"]
+  styleUrls: ["./add-section.component.css"],
 })
 export class AddSectionDialog {
   isLoading = false;
@@ -88,7 +103,7 @@ export class AddSectionDialog {
   addSection(form: NgForm): void {
     const section = {
       title: form.value.sectionTitle,
-      main: form.value.sectionMain
+      main: form.value.sectionMain,
     };
 
     this.cvService.addSection(section);

@@ -6,28 +6,28 @@ const User = require("../models/user");
 const CONFIG = require("../config");
 
 const {
-  jwt: { secret }
+  jwt: { secret },
 } = CONFIG;
 
 const router = express.Router();
 
 router.post("/signup", (req, res, next) => {
-  bcrypt.hash(req.body.password, 10).then(hash => {
+  bcrypt.hash(req.body.password, 10).then((hash) => {
     const user = new User({
       username: req.body.username,
-      password: hash
+      password: hash,
     });
     user
       .save()
-      .then(result => {
+      .then((result) => {
         res.status(201).json({
           message: "User created",
-          result: result
+          result: result,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         res.status(500).json({
-          error: err
+          error: err,
         });
       });
   });
@@ -37,38 +37,39 @@ router.post("/login", (req, res, next) => {
   let fetchedUser;
 
   User.findOne({ username: req.body.username })
-    .then(user => {
-      if (!user) {
-        return res.status(401).json({
-          message: "Authentication Failed"
-        });
+    .then((user) => {
+      if (user === null) {
+        return
+      } else {
+        fetchedUser = user;
+        return bcrypt.compare(req.body.password, user.password);
       }
-      fetchedUser = user;
-      return bcrypt.compare(req.body.password, user.password);
     })
-    .then(result => {
+    .then((result) => {
       if (!result) {
         return res.status(401).json({
-          message: "Authentication Failed"
+          message: "Authentication Failed",
+        });
+      } else {
+        const token = jwt.sign(
+          { username: fetchedUser.username, userId: fetchedUser._id },
+          secret,
+          { expiresIn: "1h" }
+        );
+
+        return res.status(200).json({
+          token: token,
+          userId: fetchedUser._id,
+          expiresIn: 3600,
         });
       }
       //do something if the result = true
-      const token = jwt.sign(
-        { username: fetchedUser.username, userId: fetchedUser._id },
-        secret,
-        { expiresIn: "1h" }
-      );
-
-      res.status(200).json({
-        token: token,
-        userId: fetchedUser._id,
-        expiresIn: 3600
-      });
     })
-    .catch(err => {
+    .catch((err) => {
+      console.log(err);
       return res.status(500).json({
         message: "Auth Failed",
-        error: err
+        error: err,
       });
     });
 });

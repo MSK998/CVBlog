@@ -15,11 +15,11 @@ export class MainPageComponent implements OnInit, OnDestroy {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
-    // this.authListenerSubscription = this.authService.getAuthStatusListener().subscribe( isAuth => {
-    //   if (isAuth) {
-    //     this.router.navigate(['/login']);
-    //   }
-    // });
+    this.authListenerSubscription = this.authService.getAuthStatusListener().subscribe( isAuth => {
+      if (!isAuth) {
+        this.router.navigate(['/login']);
+      }
+    });
   }
 
   ngOnDestroy() {}

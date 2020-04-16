@@ -8,7 +8,8 @@ const sectionSchema = mongoose.Schema({
 
 const cvSchema = mongoose.Schema({
   _id: String,
-  section: [sectionSchema]
+  creator: String,
+  section:[],
 });
 
 module.exports = mongoose.model('CV', cvSchema);

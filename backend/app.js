@@ -20,11 +20,10 @@ mongoose
       password +
       "@localhost:27017/" +
       name +
-      "?authSource=" +
-      name
+      "?authSource=cvblog"
   )
   .then(() => {
-    console.log("Connected to" + name + "on port " + port);
+    console.log("Connected to " + name + " on port " + port);
   })
   .catch(() => {
     console.log("Connection Failed");
