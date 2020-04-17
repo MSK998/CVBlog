@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const path = require("path")
 
 const CONFIG = require("./config");
 const cvRoutes = require("./routes/cvs");
@@ -20,6 +21,7 @@ mongoose
   });
 
 app.use(bodyParser.json());
+app.use("/", express.static(path.join(__dirname, "angular")))
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -36,5 +38,8 @@ app.use((req, res, next) => {
 
 app.use("/api/cv", cvRoutes);
 app.use("/api/user", userRoutes);
+app.use((req, res, next) => {
+  res.sendFile(path.join(__dirname, "angular", "index.html"))
+});
 
 module.exports = app;
