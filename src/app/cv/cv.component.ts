@@ -31,6 +31,7 @@ export class CvComponent implements OnInit, OnDestroy {
 
   editState: boolean;
   private editSub: Subscription;
+  private routeSub: Subscription;
 
   isLoading = false;
   isEmpty = true;
@@ -38,6 +39,8 @@ export class CvComponent implements OnInit, OnDestroy {
   username: string;
 
   public paramId: string;
+
+  editable = false;
 
   constructor(
     private authService: AuthService,
@@ -55,27 +58,30 @@ export class CvComponent implements OnInit, OnDestroy {
       });
 
     this.username = this.authService.getUsername();
-    this.paramId = this.route.snapshot.paramMap.get("creator");
+    this.routeSub = this.route.paramMap.subscribe((params) => {
+      if(params.get("creator") == this.username){
+        this.editable = true
+      }
 
-    console.log("ParamID:" + this.paramId);
+      this.isLoading = true;
 
-    this.isLoading = true;
-
-    this.cvSections = this.cvService.getCv(this.paramId);
-    console.log("CV COMPONENT: " + this.cvSections);
-    this.cvSub = this.cvService
-      .getCvUpdateListener()
-      .subscribe((cvSection: any[]) => {
-        this.cvSections = cvSection;
-        if (this.cvSections.length) {
-          this.isEmpty = false;
-        }
-        this.isLoading = false;
-        console.log("CV COMPONENT SUB: " + this.cvSections);
-      });
+      this.cvSections = this.cvService.getCv(params.get("creator"));
+      console.log("CV COMPONENT: " + this.cvSections);
+      this.cvSub = this.cvService
+        .getCvUpdateListener()
+        .subscribe((cvSection: any[]) => {
+          this.cvSections = cvSection;
+          if (this.cvSections.length) {
+            this.isEmpty = false;
+          }
+          this.isLoading = false;
+          console.log("CV COMPONENT SUB: " + this.cvSections);
+        });
+    });
   }
 
   ngOnDestroy() {
+    this.routeSub.unsubscribe()
     this.editSub.unsubscribe();
     this.cvSub.unsubscribe();
   }
