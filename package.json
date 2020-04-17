@@ -4,7 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "node backend/server.js",
-    "build": "webpack"
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -25,7 +28,6 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.3",
     "mongoose-unique-validator": "^2.0.3",
-    "path": "^0.12.7",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
