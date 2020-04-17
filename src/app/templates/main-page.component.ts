@@ -6,7 +6,6 @@ import { Router } from "@angular/router";
 @Component({
   template: `
     <app-cv></app-cv>
-    <app-edit-cv></app-edit-cv>
   `,
 })
 export class MainPageComponent implements OnInit, OnDestroy {
@@ -22,5 +21,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.authListenerSubscription.unsubscribe()
+  }
 }

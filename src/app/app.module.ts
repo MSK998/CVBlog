@@ -8,7 +8,6 @@ import {
   MatCardModule,
   MatDialogModule,
   MatFormFieldModule,
-  MatSpinner,
   MatProgressSpinnerModule,
   MatInputModule,
   MatCheckboxModule,
@@ -32,6 +31,8 @@ import { SignupComponent } from "./auth/signup/signup.component";
 import { AuthInterceptor } from "./auth/auth-interceptor";
 import { AppRoutingModule } from "./app-routing.module";
 import { MainPageComponent } from "./templates/main-page.component";
+import { AboutComponent } from './about/about.component';
+import { GreetingPageComponent} from './templates/greeting-page.component'
 
 @NgModule({
   declarations: [
@@ -43,8 +44,10 @@ import { MainPageComponent } from "./templates/main-page.component";
     LoginComponent,
     SignupComponent,
     MainPageComponent,
+    GreetingPageComponent,
     EditSectionDialog,
     DeleteSectionDialog,
+    AboutComponent,
   ],
   entryComponents: [AddSectionDialog, EditSectionDialog, DeleteSectionDialog],
   imports: [

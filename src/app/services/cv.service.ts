@@ -8,6 +8,10 @@ import { v4 as uuid } from "uuid";
 import { Cv } from "./cv";
 import { Section } from "./section";
 
+import { environment } from '../../environments/environment'
+
+const BACKEND_URL = environment.API_URL + "cv/"
+
 @Injectable({
   providedIn: "root",
 })
@@ -23,16 +27,20 @@ export class CvService {
 
   getCv(username: string) {
     this.http
-      .get<{ message: string; cv: Section[] }>(
-        "http://localhost:3000/api/cv/" + username
+      .get<{ message: string; creator: string, cv: Section[] }>(
+        BACKEND_URL + username
       )
       .subscribe((cvData) => {
         console.log("getCV: " + cvData);
         if (cvData == null) {
           this.cvSections = [];
+          this.cvCreator = username
+          console.log(this.cvCreator)
           this.cvUpdated.next([...this.cvSections]);
         } else {
           console.log("getCV else: " + cvData.cv);
+          this.cvCreator = cvData.creator
+          console.log(this.cvCreator)
           this.cvSections = cvData.cv;
           this.cvUpdated.next([...this.cvSections]);
           return this.cvSections;
@@ -66,8 +74,8 @@ export class CvService {
     this.cvSections.push(newSection);
 
     this.http
-      .put<{ message: string; cv: Cv }>("http://localhost:3000/api/cv", {
-        _id: localStorage.getItem("userId"),
+      .put<{ message: string; cv: Cv }>(BACKEND_URL, {
+        creator: this.cvCreator,
         section: this.cvSections,
       })
       .subscribe((response) => {
@@ -82,7 +90,7 @@ export class CvService {
     this.cvSections.splice(index, 1);
 
     this.http
-      .put<{ message: string; cv: Cv }>("http://localhost:3000/api/cv", {
+      .put<{ message: string; cv: Cv }>(BACKEND_URL, {
         _id: localStorage.getItem("userId"),
         section: this.cvSections,
       })
@@ -99,7 +107,7 @@ export class CvService {
     this.cvSections[index].main = editMain;
 
     this.http
-      .put<{ message: string; cv: Cv }>("http://localhost:3000/api/cv", {
+      .put<{ message: string; cv: Cv }>(BACKEND_URL, {
         _id: localStorage.getItem("userId"),
         section: this.cvSections,
       })

@@ -1,9 +1,14 @@
 <mat-toolbar color="primary">
   <span>
-    CVBlog
+    <a routerLink="/">
+      CVBlog
+    </a>
   </span>
   <span class="spacer"></span>
   <ul>
+    <li>
+      <a mat-button routerLink="/service/about" routerLinkActive="mat-accent">About</a>
+    </li>
     <li *ngIf="!isAuthenticated">
       <a mat-button routerLink="/service/login" routerLinkActive="mat-accent">Login</a>
     </li>

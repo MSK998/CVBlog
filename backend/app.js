@@ -6,24 +6,14 @@ const CONFIG = require("./config");
 const cvRoutes = require("./routes/cvs");
 const userRoutes = require("./routes/users");
 
-const {
-  db: { host, port, name, username, password },
-} = CONFIG;
-
 const app = express();
 
 mongoose
   .connect(
-    "mongodb://" +
-      username +
-      ":" +
-      password +
-      "@localhost:27017/" +
-      name +
-      "?authSource=cvblog"
+    "mongodb+srv://" + process.env.DBUSERNAME + ":" + process.env.DBPASSWORD+"@cluster0-5wcch.mongodb.net/test?retryWrites=true&w=majority"
   )
   .then(() => {
-    console.log("Connected to " + name + " on port " + port);
+    console.log("Connected");
   })
   .catch(() => {
     console.log("Connection Failed");
