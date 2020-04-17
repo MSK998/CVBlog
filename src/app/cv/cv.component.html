@@ -18,8 +18,8 @@
           {{ section.main }}
         </mat-card-content>
         <mat-card-footer *ngIf="editState">
-          <button mat-raised-button>Edit Section</button>
-          <button mat-raised-button>Delete Section</button>
+          <button mat-raised-button (click)="openEditSection(section.id)">Edit Section</button>
+          <button mat-raised-button (click)="deleteSection(section.id)">Delete Section</button>
         </mat-card-footer>
       </mat-card>
     </div>

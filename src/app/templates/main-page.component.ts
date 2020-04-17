@@ -17,7 +17,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.authListenerSubscription = this.authService.getAuthStatusListener().subscribe( isAuth => {
       if (!isAuth) {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/service/login']);
       }
     });
   }

@@ -6,36 +6,36 @@ import { Subject } from "rxjs";
 import { v4 as uuid } from "uuid";
 
 import { Cv } from "./cv";
-import { Section} from "./section"
+import { Section } from "./section";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class CvService {
   editing = false;
   private editingUpdated = new Subject<boolean>();
 
-  public cvCreator
+  public cvCreator;
   public cvSections = [];
   private cvUpdated = new Subject<any>();
 
   constructor(private http: HttpClient) {}
 
   getCv(username: string) {
-
-    console.log(username)
     this.http
-      .get<{ message: string, cv: Section[] }>("http://localhost:3000/api/cv/" + username)
-      .subscribe(cvData => {
-        console.log("getCV: "+cvData);
+      .get<{ message: string; cv: Section[] }>(
+        "http://localhost:3000/api/cv/" + username
+      )
+      .subscribe((cvData) => {
+        console.log("getCV: " + cvData);
         if (cvData == null) {
           this.cvSections = [];
           this.cvUpdated.next([...this.cvSections]);
         } else {
-          console.log("getCV else: "+cvData.cv)
+          console.log("getCV else: " + cvData.cv);
           this.cvSections = cvData.cv;
           this.cvUpdated.next([...this.cvSections]);
-          return this.cvSections
+          return this.cvSections;
         }
       });
 
@@ -60,39 +60,53 @@ export class CvService {
     const newSection = {
       id: id,
       title: section.title,
-      main: main
+      main: main,
     };
 
     this.cvSections.push(newSection);
 
     this.http
-      .put<{message: string; cv: Cv}>("http://localhost:3000/api/cv", {
+      .put<{ message: string; cv: Cv }>("http://localhost:3000/api/cv", {
         _id: localStorage.getItem("userId"),
-        section: this.cvSections
+        section: this.cvSections,
       })
-      .subscribe(response => {
+      .subscribe((response) => {
         console.log(response.cv.section);
         this.cvUpdated.next([...this.cvSections]);
       });
-
-    // this.cvUpdated.next([...this.cvSections]);
   }
 
   removeSection(sectionId) {
-    const index = this.cvSections.findIndex(x => x.id === sectionId);
+    const index = this.cvSections.findIndex((x) => x.id === sectionId);
 
     this.cvSections.splice(index, 1);
 
-    this.cvUpdated.next([...this.cvSections]);
+    this.http
+      .put<{ message: string; cv: Cv }>("http://localhost:3000/api/cv", {
+        _id: localStorage.getItem("userId"),
+        section: this.cvSections,
+      })
+      .subscribe((response) => {
+        console.log(response.cv.section);
+        this.cvUpdated.next([...this.cvSections]);
+      });
   }
 
-  editSection(section) {
-    const index = this.cvSections.findIndex(x => x.id === section);
+  editSection(editId, editTitle, editMain) {
+    const index = this.cvSections.findIndex((x) => x.id === editId);
 
-    this.cvSections[index].title = section.title;
-    this.cvSections[index].main = section.main;
+    this.cvSections[index].title = editTitle;
+    this.cvSections[index].main = editMain;
 
-    this.cvUpdated.next([...this.cvSections]);
+    this.http
+      .put<{ message: string; cv: Cv }>("http://localhost:3000/api/cv", {
+        _id: localStorage.getItem("userId"),
+        section: this.cvSections,
+      })
+      .subscribe((response) => {
+        console.log(response.cv.section);
+        this.cvUpdated.next([...this.cvSections]);
+      });
   }
 
   toggleEditing() {
@@ -110,10 +124,10 @@ export class CvService {
   }
 
   clearCVData() {
-    console.log(this.cvSections)
-    this.cvSections = []
-    this.cvCreator = null
-    this.cvUpdated.next([...this.cvSections])
-    console.log(this.cvSections)
+    console.log(this.cvSections);
+    this.cvSections = [];
+    this.cvCreator = null;
+    this.cvUpdated.next([...this.cvSections]);
+    console.log(this.cvSections);
   }
 }

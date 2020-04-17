@@ -38,7 +38,7 @@ export class AuthService {
     this.http
       .post('http://localhost:3000/api/user/signup', userData)
       .subscribe(response => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/service/login']);
       });
   }
 
@@ -100,7 +100,7 @@ export class AuthService {
     this.userId = null;
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/service/login']);
     this.clearAuthData();
     this.CvService.clearCVData();
     clearTimeout(this.tokenTimer);

@@ -1,5 +1,5 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
 
 import {
   MatToolbarModule,
@@ -11,22 +11,27 @@ import {
   MatSpinner,
   MatProgressSpinnerModule,
   MatInputModule,
-  MatCheckboxModule
-} from '@angular/material';
+  MatCheckboxModule,
+} from "@angular/material";
 
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AppComponent } from "./app.component";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { FormsModule } from "@angular/forms";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 
-import { HeaderComponent } from './header/header.component';
-import { EditCvComponent } from './edit-cv/edit-cv.component';
-import { CvComponent, AddSectionDialog } from './cv/cv.component';
-import { LoginComponent } from './auth/login/login.component'
-import { SignupComponent } from './auth/signup/signup.component'
-import { AuthInterceptor } from './auth/auth-interceptor'
-import { AppRoutingModule } from './app-routing.module';
-import { MainPageComponent } from './templates/main-page.component';
+import { HeaderComponent } from "./header/header.component";
+import { EditCvComponent } from "./edit-cv/edit-cv.component";
+import {
+  CvComponent,
+  AddSectionDialog,
+  EditSectionDialog,
+  DeleteSectionDialog,
+} from "./cv/cv.component";
+import { LoginComponent } from "./auth/login/login.component";
+import { SignupComponent } from "./auth/signup/signup.component";
+import { AuthInterceptor } from "./auth/auth-interceptor";
+import { AppRoutingModule } from "./app-routing.module";
+import { MainPageComponent } from "./templates/main-page.component";
 
 @NgModule({
   declarations: [
@@ -37,11 +42,11 @@ import { MainPageComponent } from './templates/main-page.component';
     AddSectionDialog,
     LoginComponent,
     SignupComponent,
-    MainPageComponent
+    MainPageComponent,
+    EditSectionDialog,
+    DeleteSectionDialog,
   ],
-  entryComponents: [
-    AddSectionDialog
-  ],
+  entryComponents: [AddSectionDialog, EditSectionDialog, DeleteSectionDialog],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -56,9 +61,11 @@ import { MainPageComponent } from './templates/main-page.component';
     MatInputModule,
     FormsModule,
     MatCheckboxModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true}],
-  bootstrap: [AppComponent]
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

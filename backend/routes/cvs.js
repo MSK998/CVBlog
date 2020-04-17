@@ -32,7 +32,7 @@ router.put("", checkAuth, (req, res, next) => {
     section: req.body.section,
   });
 
-  CV.collection.updateOne({_id: cv._id}, cv,{upsert: true});
+  CV.collection.updateOne({_id: cv._id, creator: req.userData.username}, cv,{upsert: true});
 
   res.status(201).json({
     message: 'CV updated',

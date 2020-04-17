@@ -83,6 +83,32 @@ export class CvComponent implements OnInit, OnDestroy {
       data: {},
     });
   }
+
+  openEditSection(idToEdit) {
+    const index = this.cvSections.findIndex(x => x.id === idToEdit)
+
+    const dialogRef = this.dialog.open(EditSectionDialog, {
+      width: "800px",
+      data: { id: this.cvSections[index].id, title: this.cvSections[index].title, main: this.cvSections[index].main }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.cvService.editSection(this.cvSections[index].id, result.title, result.main)
+    })
+
+  }
+
+  deleteSection (idToDelete) {
+    const index = this.cvSections.findIndex(x => x.id === idToDelete)
+
+    const dialogRef = this.dialog.open(DeleteSectionDialog, {
+      width: "400px"
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.cvService.removeSection(this.cvSections[index].id)
+    })
+  }
 }
 
 @Component({
@@ -107,5 +133,41 @@ export class AddSectionDialog {
     };
 
     this.cvService.addSection(section);
+  }
+}
+
+@Component({
+  selector: 'app-edit-dialog',
+  templateUrl: './edit-section.component.html',
+  styleUrls: []
+})
+
+export class EditSectionDialog {
+  constructor(
+    public dialogRef: MatDialogRef<EditSectionDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+  ) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
+
+@Component({
+  selector: 'app-delete-dialog',
+  templateUrl: './delete-section.component.html',
+  styleUrls: []
+})
+
+export class DeleteSectionDialog {
+  constructor(
+    public dialogRef: MatDialogRef<DeleteSectionDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
+  ) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 }
