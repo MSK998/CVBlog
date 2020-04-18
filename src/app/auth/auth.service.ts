@@ -102,6 +102,7 @@ export class AuthService {
       this.token = authInfo.token;
       this.userId = authInfo.userId;
       this.isAuthenticated = true;
+      this.username = authInfo.username
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
     }
@@ -110,6 +111,7 @@ export class AuthService {
   logout() {
     this.token = null;
     this.userId = null;
+    this.username = null;
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
     this.router.navigate(["/service/login"]);
@@ -130,10 +132,10 @@ export class AuthService {
     expirationDate: Date,
     username: string
   ) {
-    localStorage.setItem("username", username);
     localStorage.setItem("token", token);
     localStorage.setItem("userId", userId);
     localStorage.setItem("expiration", expirationDate.toISOString());
+    localStorage.setItem("username", username);
   }
 
   private clearAuthData() {
@@ -147,6 +149,7 @@ export class AuthService {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
     const expirationDate = localStorage.getItem("expiration");
+    const username = localStorage.getItem("username")
 
     if (!token && !expirationDate) {
       return;
@@ -158,6 +161,7 @@ export class AuthService {
       // tslint:disable-next-line: object-literal-shorthand
       userId: userId,
       expirationDate: new Date(expirationDate),
+      username: username,
     };
   }
 }

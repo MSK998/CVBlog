@@ -1,0 +1,45 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+
+<form (submit)="editSection(sectionForm)" #sectionForm="ngForm">
+  <h1 mat-dialog-title>Edit</h1>
+  <div>
+    <mat-form-field>
+      <input
+        matInput
+        type="string"
+        placeholder="Title"
+        [(ngModel)]="data.title"
+        name="sectionTitle"
+        required
+      />
+      <mat-error *ngIf="!data.title">Please Enter a Title</mat-error>
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <textarea
+        matInput
+        type="string"
+        placeholder="Main"
+        rows="5"
+        draggable="false"
+        [(ngModel)]="data.main"
+        name="sectionMain"
+        required
+      ></textarea>
+      <mat-error *ngIf="!data.main">Please Enter a Main Section</mat-error>
+    </mat-form-field>
+  </div>
+
+  <br />
+
+  <section>
+    <!-- <mat-checkbox [(ngModel)]="isChecked" name="isChecked"
+      >Check to make a comma seperated list</mat-checkbox
+    > -->
+    <br />
+    <button mat-raised-button color="accent" type="submit" mat-dialog-close>
+      Edit Section
+    </button>
+    <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+  </section>
+</form>

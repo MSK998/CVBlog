@@ -14,8 +14,11 @@ import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from "@angular/material";
 import { AuthService } from "../auth/auth.service";
 import { HttpParams } from "@angular/common/http";
 import { ActivatedRoute } from "@angular/router";
+import { Section } from "../services/section";
+import { stringify } from "querystring";
 
 export interface DialogData {
+  id: string;
   title: string;
   main: string;
 }
@@ -59,8 +62,8 @@ export class CvComponent implements OnInit, OnDestroy {
 
     this.username = this.authService.getUsername();
     this.routeSub = this.route.paramMap.subscribe((params) => {
-      if(params.get("creator") == this.username){
-        this.editable = true
+      if (params.get("creator") == this.username) {
+        this.editable = true;
       }
 
       this.isLoading = true;
@@ -81,7 +84,7 @@ export class CvComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.routeSub.unsubscribe()
+    this.routeSub.unsubscribe();
     this.editSub.unsubscribe();
     this.cvSub.unsubscribe();
   }
@@ -96,21 +99,13 @@ export class CvComponent implements OnInit, OnDestroy {
   openEditSection(idToEdit) {
     const index = this.cvSections.findIndex((x) => x.id === idToEdit);
 
-    const dialogRef = this.dialog.open(EditSectionDialog, {
+    this.dialog.open(EditSectionDialog, {
       width: "800px",
       data: {
         id: this.cvSections[index].id,
         title: this.cvSections[index].title,
         main: this.cvSections[index].main,
       },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      this.cvService.editSection(
-        this.cvSections[index].id,
-        result.title,
-        result.main
-      );
     });
   }
 
@@ -144,6 +139,7 @@ export class AddSectionDialog {
 
   addSection(form: NgForm): void {
     const section = {
+      id: this.data.id,
       title: form.value.sectionTitle,
       main: form.value.sectionMain,
     };
@@ -155,13 +151,26 @@ export class AddSectionDialog {
 @Component({
   selector: "app-edit-dialog",
   templateUrl: "./edit-section.component.html",
-  styleUrls: [],
+  styleUrls: ["./add-section.component.css"],
 })
 export class EditSectionDialog {
   constructor(
     public dialogRef: MatDialogRef<EditSectionDialog>,
+    private cvService: CvService,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {}
+
+  isLoading = false;
+
+  editSection(form: NgForm): void {
+    const section = {
+      id: this.data.id,
+      title: form.value.sectionTitle,
+      main: form.value.sectionMain,
+    };
+
+    this.cvService.editSection(section.id, section.title, section.main);
+  }
 
   onNoClick(): void {
     this.dialogRef.close();

@@ -91,7 +91,7 @@ export class CvService {
 
     this.http
       .put<{ message: string; cv: Cv }>(BACKEND_URL, {
-        _id: localStorage.getItem("userId"),
+        creator: this.cvCreator,
         section: this.cvSections,
       })
       .subscribe((response) => {
@@ -108,7 +108,7 @@ export class CvService {
 
     this.http
       .put<{ message: string; cv: Cv }>(BACKEND_URL, {
-        _id: localStorage.getItem("userId"),
+        creator: this.cvCreator,
         section: this.cvSections,
       })
       .subscribe((response) => {
